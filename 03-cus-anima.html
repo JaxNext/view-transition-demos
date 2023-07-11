@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 150px;
+      border-radius: 20px;
+      margin: 16px;
+      background-color: skyblue;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      view-transition-name: box;
+    }
+    .box.right {
+      background-color: orangered;
+    }
+    @keyframes box-out {
+      from {
+        transform: rotateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: rotateX(180deg);
+        opacity: 0;
+      }
+    }
+    @keyframes box-in {
+      from {
+        transform: rotateX(180deg);
+        opacity: 0;
+      }
+      to {
+        transform: rotateX(0);
+        opacity: 1;
+      }
+    }
+    ::view-transition-old(box) {
+      animation-name: box-out;
+    }
+    ::view-transition-new(box) {
+      animation-name: box-in;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="changeDOM()">Change DOM</button>
+  <div class="container">
+    <div class="left box">LEFT</div>
+  </div>
+  <script>
+    let isLeft = true;
+    const createBox = type => {
+      const box = document.createElement('div');
+      box.className = `box ${type}`;
+      box.innerText = type.toUpperCase();
+      return box;
+    };
+    const changeDOM = async () => {
+      if (!document.startViewTransition) {
+        switchBox();
+        return;
+      }
+      vt = document.startViewTransition(() => switchBox());
+    };
+    const switchBox = () => {
+      const newBox = isLeft ? createBox('right') : createBox('left');
+      const container = document.querySelector('.container');
+      container.innerHTML = '';
+      container.appendChild(newBox);
+      isLeft = !isLeft;
+    };
+  </script>
+</body>
+</html>

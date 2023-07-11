@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 80px;
+      height: 80px;
+      background: orangered;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="move()">MOVE</button>
+  <div class="box"></div>
+  <script>
+    const box = document.querySelector('.box');
+    let startTime = 0;
+    let prevTime = 0
+    const reqFrm = time => {
+      console.log('TIME', prevTime - startTime);
+      if (!startTime) {
+        startTime = time;
+      }
+      if (prevTime - startTime >= 2000) return;
+      box.style.transform = `translateX(${(prevTime - startTime) * 0.1}px)`;
+      prevTime = time;
+      window.requestAnimationFrame(reqFrm);
+    };
+    const move = () => {
+      window.requestAnimationFrame(reqFrm);
+    };
+  </script>
+</body>
+</html>

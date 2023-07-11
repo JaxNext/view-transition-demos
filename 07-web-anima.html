@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 80px;
+      height: 80px;
+      background: orangered;
+      margin: 20px;
+      /* animation: roll 0.5s linear infinite; */
+    }
+    @keyframes roll {
+      0% {
+        transform: rotate(0);
+      }
+      30% {
+        background-color: skyblue;
+      }
+      0% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <button>PLAY</button>
+  <button>PAUSE</button>
+  <button>GROW</button>
+  <button>SHRINK</button>
+  <div class="box"></div>
+  <script>
+    const roll = [
+      {
+        transform: 'rotate(0)',
+        'background-color': 'orangered'
+      },
+      {
+        offset: 0.3,
+        'background-color': 'skyblue',
+      },
+      {
+        transform: 'rotate(360deg)',
+        'background-color': 'orangered',
+      },
+    ];
+    const timing = {
+      duration: 500,
+      iterations: Infinity,
+    };
+    const box = document.querySelector('.box');
+    box.animate(roll, timing).pause();
+  </script>
+</body>
+</html>

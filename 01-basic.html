@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .list-box {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="changeDom()">Change DOM</button>
+  <div class="list-box">
+    <ul id="list-a"></ul>
+    <ul id="list-b"></ul>
+  </div>
+  <script>
+    const changeListA = () => {
+      addItem('#list-a');
+    };
+    const changeListB = () => {
+      if (!document.startViewTransition) {
+        addItem('#list-b');
+        return;
+      }
+      document.startViewTransition(() => addItem('#list-b'));
+    };
+    const changeDom = () => {
+      changeListA();
+      changeListB();
+    };
+    const addItem = selector => {
+      const list = document.querySelector(selector);
+      const item = document.createElement('li');
+      item.innerText = 'XXX';
+      list.appendChild(item);
+    };
+  </script>
+</body>
+</html>

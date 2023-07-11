@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 80px;
+      height: 80px;
+      margin: 20px;
+      background: orangered;
+      view-transition-name: box;
+    }
+    .box.box-1 {
+      /* view-transition-name: box; */
+    }
+    .box.blue {
+      background: skyblue;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="change()">CHANGE</button>
+  <div class="box box-1"></div>
+  <div class="box box-2"></div>
+  <script>
+    const changeColor = () => {
+      const boxes = document.querySelectorAll('.box');
+      for (let i = 0; i < boxes.length; i++) {
+        const box = boxes[i];
+        const className = box.className;
+        if (className.includes('blue')) {
+          box.className = className.replace('blue', '');
+        } else {
+          box.className += ' blue';
+          
+        }
+      }
+    };
+    const change = async () => {
+      if (!document.startViewTransition) {
+        changeColor();
+        return;
+      }
+      const vt = document.startViewTransition(changeColor);
+      // await vt.ready;
+      try {
+        await vt.ready;
+      } catch (error) {
+        // Do something
+      }
+      console.log('AFTER READY');
+    };
+  </script>
+</body>
+</html>

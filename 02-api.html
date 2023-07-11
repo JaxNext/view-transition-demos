@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button onclick="changeList()">Change DOM</button>
+  <ul id="list"></ul>
+  <script>
+    let vt = null;
+    const skipTransition = () => {
+      if (!vt?.skipTransition) return;
+      vt.skipTransition();
+    };
+    
+    const changeList = async () => {
+      if (!document.startViewTransition) {
+        addItem('#list');
+        return;
+      }
+      vt = document.startViewTransition(() => addItem('#list'));
+      console.log('View Transition Instance', vt);
+      
+      // skipTransition();
+      await vt.updateCallbackDone;
+      console.log('Callback Done');
+      
+      // skipTransition();
+      await vt.ready;
+      console.log('Transition Ready');
+      
+      // skipTransition();
+      await vt.finished;
+      console.log('Transition Finished');
+      
+    }
+    const addItem = selector => {
+      const list = document.querySelector(selector);
+      const item = document.createElement('li');
+      item.innerText = 'XXX';
+      list.appendChild(item);
+    };
+  </script>
+</body>
+</html>

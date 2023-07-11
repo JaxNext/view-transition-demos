@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      display: flex;
+      height: 300px;
+    }
+    .side-bar {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .link {
+      width: 140px;
+      flex: 1;
+      border-radius: 8px;
+      background-color: skyblue;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 24px;
+    }
+    .link:last-of-type {
+      margin: 0;
+    }
+    .content {
+      width: 400px;
+      height: 300px;
+      border-radius: 12px;
+      background-color: skyblue;
+      margin-left: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 48px;
+    }
+    .link[data-page="2"],
+    .content[data-page="2"] {
+      background-color: orangered;
+    }
+    .link[data-page="3"],
+    .content[data-page="3"] {
+      background-color: darkcyan;
+    }
+    .link[data-page="4"],
+    .content[data-page="4"] {
+      background-color: firebrick;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="side-bar">
+      <div class="link" data-page="1">1</div>
+      <div class="link" data-page="2">2</div>
+      <div class="link" data-page="3">3</div>
+      <div class="link" data-page="4">4</div>
+    </div>
+    <div class="content-box"></div>
+  </div>
+  <script>
+    const contentBox = document.querySelector('.content-box');
+    const change = (type) => {
+      contentBox.innerHTML = getContent(type);
+    };
+    const changeContent = e => {
+      const pageType = e.target.dataset.page;
+      if (!pageType) return;
+      if (!document.startViewTransition) {
+        change(pageType);
+        return;
+      }
+      document.startViewTransition(() => change(pageType));
+    };
+    const getContent = type => {
+      return `<div class="content" data-page="${type}">${type}</div>`;
+    }
+    contentBox.innerHTML = getContent(1);
+    document.querySelector('.side-bar').addEventListener('click', changeContent);
+  </script>
+</body>
+</html>

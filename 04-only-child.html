@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .tabs {
+      display: flex;
+    }
+    .pane {
+      width: 200px;
+      height: 150px;
+      border-radius: 20px;
+      margin: 16px;
+      background-color: skyblue;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      view-transition-name: pane;
+    }
+    .spot {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: orangered;
+      margin-right: 12px;
+      view-transition-name: spot;
+    }
+    .pane-3 .spot {
+      display: none;
+    }
+    .box.right {
+      background-color: orangered;
+    }
+    @keyframes box-out {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+    @keyframes box-in {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    @keyframes spot-out {
+      from {
+        transform: scale(1);
+      }
+      to {
+        transform: scale(0);
+      }
+    }
+    @keyframes spot-in {
+      from {
+        transform: scale(0);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+    ::view-transition-old(pane) {
+      animation-name: box-out;
+    }
+    ::view-transition-new(pane) {
+      animation-name: box-in;
+    }
+    ::view-transition-new(spot):only-child {
+      animation-name: spot-in;
+    }
+    ::view-transition-old(spot):only-child {
+      animation-name: spot-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="tabs">
+    <button class="tab tab-1" data-tab="1">TAB 1</button>
+    <button class="tab tab-2" data-tab="2">TAB 2</button>
+    <button class="tab tab-3" data-tab="3">TAB 3</button>
+  </div>
+  <div class="pane-box">
+    <div class="pane pane-1">
+      <div class="spot"></div>
+      <div class="text">PANE 1</div>
+    </div>
+  </div>
+  <script>
+    let isLeft = true;
+    const createPane = type => {
+      return `
+        <div class="pane pane-${type}">
+          <div class="spot"></div>
+          <div class="text">PANE ${type}</div>
+        </div>
+      `;
+    };
+    document.querySelector('.tabs').addEventListener('click', e => {
+      const tab = e.target;
+      const type = tab.dataset.tab;
+      if (!type) return;
+      
+      if (!document.startViewTransition) {
+        switchTab(type);
+        return;
+      }
+      vt = document.startViewTransition(() => switchTab(type));
+    });
+    const switchTab = type => {
+      const paneBox = document.querySelector('.pane-box');
+      paneBox.innerHTML = createPane(type);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" class="blue">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none;
+      mix-blend-mode: normal;
+    }
+    .blue {
+      background-color: skyblue;
+    }
+    .red {
+      background-color: orangered;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const change = () => {
+      const ele = document.documentElement;
+      const className = ele.className;
+      ele.className = className === 'blue' ? 'red' : 'blue'
+    };
+    document.documentElement.addEventListener('click', async e => {
+      if (!document.startViewTransition) {
+        change();
+        return;
+      }
+      const x = e.clientX;
+      const y = e.clientY;
+      const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+
+      const vt = document.startViewTransition(change);
+      await vt.ready;
+      const frameConfig = {
+        clipPath: [
+          `circle(0 at ${x}px ${y}px)`,
+          `circle(${radius}px at ${x}px ${y}px)`,
+        ]
+      };
+      const timingConfig = {
+        duration: 200,
+        pseudoElement: '::view-transition-new(root)'
+      };
+      document.documentElement.animate(frameConfig, timingConfig);
+    });
+  </script>
+</body>
+</html>

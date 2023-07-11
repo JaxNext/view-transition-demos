@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      display: flex;
+      justify-content: space-between;
+    }
+    .box {
+      width: 150px;
+      height: 200px;
+      border-radius: 20px;
+      margin: 16px;
+      background-color: skyblue;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      /* view-transition-name: spot; */
+    }
+    .spot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: orangered;
+      view-transition-name: spot;
+    }
+    .spot.huge {
+      width: 100px;
+      height: 100px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="changeDOM()">CHANGE DOM</button>
+  <div class="container">
+    <div class="box left">
+      <div class="spot mini"></div>
+    </div>
+    <div class="box right">
+      <div class="spot huge"></div>
+    </div>
+  </div>
+  <script>
+    let isMini = true
+    const changeDOM = () => {
+      if (!document.startViewTransition) {
+        transfer()
+        return
+      }
+      document.startViewTransition(() => transfer());
+    }
+    const transfer = () => {
+      const mini = document.querySelector('.mini')
+      const huge = document.querySelector('.huge')
+      if (isMini) {
+        mini.style.display = 'none'
+        huge.style.display = 'block'
+      } else {
+        huge.style.display = 'none'
+        mini.style.display = 'block'
+      }
+      isMini = !isMini
+    }
+  </script>
+</body>
+</html>
